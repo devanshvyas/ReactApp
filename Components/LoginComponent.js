@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Animated, Image, Easing, Alert } from "react-na
 import CustomButton from './CustomButton';
 import TextView from "./TextView";
 import CustomCheckbox from "./CustomCheckbox";
+import LoadingIndicator from "./LoadingIndicator";
 
 // jm1@example.com
 // jay@123
@@ -14,7 +15,8 @@ export default class LoginComponent extends Component {
         this.state = {
             isRemembered: true,
             email: 'jm1@example.com',
-            password: 'jay@123'
+            password: 'jay@123',
+            isLoading: false
         }
     }
 
@@ -36,6 +38,7 @@ export default class LoginComponent extends Component {
         const pass = this.state.password;
         if (mail != '') {
             if (pass != '') {
+                this.setState({isLoading: true});
                 fetch('http://35.160.197.175:3006/api/v1/user/login', {
                     method: 'POST',
                     headers: {
@@ -48,11 +51,14 @@ export default class LoginComponent extends Component {
                 }).then((response) => {
                     return response.json()
                 }).then((responseJson) => {
+                    this.setState({isLoading: false});
                     if (responseJson.error == null) {
                         Alert.alert('Success', 'Login successfull!!')
                     } else {
                         Alert.alert('Error', responseJson.error)
                     }
+                }).catch((error) => {
+                    this.setState({isLoading: false});
                 })
             } else {
                 this.showOKAlert('password')
@@ -98,6 +104,7 @@ export default class LoginComponent extends Component {
                     <View style={{ flex: 0.8 }}></View>
                 </View>
             </View>
+            <LoadingIndicator isLoading={this.state.isLoading} style={{flex:1, zIndex:1}}></LoadingIndicator>
 
             <View style={styles.bottomContainer}>
                 <CustomButton title="Login" width="60%" onPressEvent={this.loginPressed}></CustomButton>
@@ -109,7 +116,6 @@ export default class LoginComponent extends Component {
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
-
     },
     topContainer: {
         flex: 0.45,
