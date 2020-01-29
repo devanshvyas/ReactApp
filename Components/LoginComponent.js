@@ -4,6 +4,7 @@ import CustomButton from './CustomButton';
 import TextView from "./TextView";
 import CustomCheckbox from "./CustomCheckbox";
 import LoadingIndicator from "./LoadingIndicator";
+import RecipeListComponent from "./RecipeListComponent";
 
 // jm1@example.com
 // jay@123
@@ -16,7 +17,8 @@ export default class LoginComponent extends Component {
             isRemembered: true,
             email: 'jm1@example.com',
             password: 'jay@123',
-            isLoading: false
+            isLoading: false,
+            accessToken: null
         }
     }
 
@@ -38,7 +40,7 @@ export default class LoginComponent extends Component {
         const pass = this.state.password;
         if (mail != '') {
             if (pass != '') {
-                this.setState({isLoading: true});
+                this.setState({ isLoading: true });
                 fetch('http://35.160.197.175:3006/api/v1/user/login', {
                     method: 'POST',
                     headers: {
@@ -51,14 +53,16 @@ export default class LoginComponent extends Component {
                 }).then((response) => {
                     return response.json()
                 }).then((responseJson) => {
-                    this.setState({isLoading: false});
+                    this.setState({ isLoading: false });
                     if (responseJson.error == null) {
+                        console.log(responseJson);
+                        this.setState({accessToken:responseJson.token})
                         Alert.alert('Success', 'Login successfull!!')
                     } else {
                         Alert.alert('Error', responseJson.error)
                     }
                 }).catch((error) => {
-                    this.setState({isLoading: false});
+                    this.setState({ isLoading: false });
                 })
             } else {
                 this.showOKAlert('password')
@@ -77,39 +81,44 @@ export default class LoginComponent extends Component {
             inputRange: [0, 1],
             outputRange: ['0deg', '360deg'],
         });
-
-        return <View style={styles.mainContainer}>
-            <View style={styles.topContainer}>
-                <View style={styles.welcomeTextContainer}>
-                    <Text style={[styles.welcomeText, styles.commonText]}>Welcome back!</Text>
+        if (this.state.accessToken == null) {
+            return <View style={styles.mainContainer}>
+                <View style={styles.topContainer}>
+                    <View style={styles.welcomeTextContainer}>
+                        <Text style={[styles.welcomeText, styles.commonText]}>Welcome back!</Text>
+                    </View>
+                    <View style={styles.onusTextContainer}>
+                        <Animated.Image source={require('../assets/reactLogo.png')} style={[styles.onusLogo, { transform: [{ rotate: RotateData }] }]} />
+                        <Text style={[styles.promoText, styles.commonText]}>React App</Text>
+                    </View>
                 </View>
-                <View style={styles.onusTextContainer}>
-                    <Animated.Image source={require('../assets/reactLogo.png')} style={[styles.onusLogo, { transform: [{ rotate: RotateData }] }]} />
-                    <Text style={[styles.promoText, styles.commonText]}>React App</Text>
+
+                <View style={styles.middleContainer}>
+                    <View style={{ marginBottom: 20 }}>
+                        <TextView title="Email:" keyboardType="email-address" isSecured={false} textChange={(email) => this.setState({ email })}></TextView>
+                    </View>
+
+                    <View style={styles.passwordContainer}>
+                        <TextView title="Password:" isSecured={true} textChange={(password) => { this.setState({ password }) }}></TextView>
+                    </View>
+
+                    <View style={styles.rememberMeContainer}>
+                        <CustomCheckbox enable={this.state.isRemembered}></CustomCheckbox>
+                        <Text style={styles.rememberMeText}>REMEMBER ME</Text>
+                        <View style={{ flex: 0.8 }}></View>
+                    </View>
+                </View>
+                <LoadingIndicator isLoading={this.state.isLoading} style={{ flex: 1, zIndex: 1 }}></LoadingIndicator>
+
+                <View style={styles.bottomContainer}>
+                    <CustomButton title="Login" width="60%" onPressEvent={this.loginPressed}></CustomButton>
                 </View>
             </View>
-
-            <View style={styles.middleContainer}>
-                <View style={{ marginBottom: 20 }}>
-                    <TextView title="Email:" keyboardType="email-address" isSecured={false} textChange={(email) => this.setState({ email })}></TextView>
-                </View>
-
-                <View style={styles.passwordContainer}>
-                    <TextView title="Password:" isSecured={true} textChange={(password) => { this.setState({ password }) }}></TextView>
-                </View>
-
-                <View style={styles.rememberMeContainer}>
-                    <CustomCheckbox enable={this.state.isRemembered}></CustomCheckbox>
-                    <Text style={styles.rememberMeText}>REMEMBER ME</Text>
-                    <View style={{ flex: 0.8 }}></View>
-                </View>
+        } else {
+            return <View style={[styles.mainContainer, styles.shadow]}>
+                <RecipeListComponent token={this.state.accessToken} />
             </View>
-            <LoadingIndicator isLoading={this.state.isLoading} style={{flex:1, zIndex:1}}></LoadingIndicator>
-
-            <View style={styles.bottomContainer}>
-                <CustomButton title="Login" width="60%" onPressEvent={this.loginPressed}></CustomButton>
-            </View>
-        </View>
+        }
     }
 }
 
@@ -185,5 +194,10 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         color: 'white',
         marginLeft: 5
+    },
+    shadow: {
+        shadowOffset: { width: 0.5, height: 1 },
+        shadowOpacity: 0.5,
+        shadowRadius: 1,
     }
 });

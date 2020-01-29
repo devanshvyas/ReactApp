@@ -7,14 +7,18 @@ export default class CustomButton extends Component {
     styles = StyleSheet.create({
         mainContainer: {
             margin: 10,
-            backgroundColor: '#2bb0e0',
+            backgroundColor: '#219199',
             height: 50,
             borderRadius: 25,
             borderWidth: 0.5,
             borderColor: '#228cb3',
             flexDirection: 'row',
             width: this.props.width,
-            alignContent: 'center'
+            alignContent: 'center',
+            shadowOffset: { width: 0, height: 1 },
+            shadowOpacity: 0.5,
+            shadowRadius: 2,
+            shadowColor: 'white'
         },
         button: {
             flex: 1,
@@ -24,6 +28,7 @@ export default class CustomButton extends Component {
             alignSelf: 'center',
             textAlign: 'center'
         }
+
     });
 
 
