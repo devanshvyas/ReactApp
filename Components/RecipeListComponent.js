@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, Alert, FlatList, Text, SafeAreaView, Image, TouchableWithoutFeedback, ScrollView, TouchableOpacity, Dimensions, ImageBackground } from 'react-native'
 import LoadingIndicator from './LoadingIndicator'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { onGetRecipes } from "../Actions/actions"
 
 
-export default class RecipeListComponent extends Component {
+class RecipeListComponent extends Component {
     constructor() {
         super()
         this.state = {
@@ -22,15 +25,14 @@ export default class RecipeListComponent extends Component {
             {
                 method: 'GET',
                 headers: {
-                    'Authorization': 'Bearer ' + this.props.token
+                    'Authorization': 'Bearer ' + this.props.accessToken
                 }
             }).then((response) => { return response.json() })
             .then((responseJSON) => {
                 this.setState({ isLoading: false })
                 if (responseJSON.error == null) {
-                    console.log(responseJSON);
-
                     this.setState({ recipeList: responseJSON })
+                    this.props.onGetRecipes(responseJSON);
                 } else {
                     Alert.alert('Error', responseJSON.error)
                 }
@@ -46,13 +48,13 @@ export default class RecipeListComponent extends Component {
         if (url == null) {
             return require('../assets/noData.png')
         } else {
-            return {uri: url}
+            return { uri: url }
         }
     }
 
     render() {
         return (
-            <View style={styles.container}>
+            <ImageBackground source={require('../assets/BG.jpeg')} style={styles.container}>
                 <LoadingIndicator isLoading={this.state.isLoading} />
                 <SafeAreaView>
                     <ScrollView>
@@ -62,12 +64,12 @@ export default class RecipeListComponent extends Component {
                             renderItem={({ item }) => {
                                 return <View style={[styles.recipeCell, styles.shadow]}>
                                     <TouchableWithoutFeedback style={styles.container}>
-                                        <ImageBackground source={this.getImageUrl(item.photo)} style={styles.recipeImage} imageStyle = {{borderRadius: 10}}>
+                                        <ImageBackground source={this.getImageUrl(item.photo)} style={styles.recipeImage} imageStyle={{ borderRadius: 10 }}>
                                             <View style={styles.recipeBottomContainer}>
                                             </View>
                                             <View style={styles.recipeUpperContainer}>
                                                 <Text style={[styles.commonText, styles.recipeMadeBy]}>Made with ❤️ by 👨🏻‍🍳 {item.firstName + ' ' + item.lastName}</Text>
-                                                <Text style={[styles.commonText, styles.recipeMadeBy, {fontSize: 15}]}>Serves: {item.serves}</Text>
+                                                <Text style={[styles.commonText, styles.recipeMadeBy, { fontSize: 15 }]}>Serves: {item.serves}</Text>
                                                 <Text style={[styles.commonText, styles.recipeMadeBy]}>Complexcity level: {item.complexity}</Text>
                                             </View>
                                             <View style={styles.recipeTopContainer}>
@@ -81,7 +83,7 @@ export default class RecipeListComponent extends Component {
                         />
                     </ScrollView>
                 </SafeAreaView>
-            </View>
+            </ImageBackground>
         );
     }
 }
@@ -99,13 +101,13 @@ const styles = StyleSheet.create({
         flex: 0.3
     },
     recipeUpperContainer: {
-        position:'absolute',
+        position: 'absolute',
         // backgroundColor:'green',
-        width:'100%',
-        height:85
+        width: '100%',
+        height: 85
     },
     recipeCell: {
-        margin:10,
+        margin: 10,
         backgroundColor: '#219199',
         height: 300,
         borderRadius: 10
@@ -121,8 +123,8 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         marginTop: 5,
         color: 'white',
-        alignSelf:'flex-start',
-        fontWeight:'500'
+        alignSelf: 'flex-start',
+        fontWeight: '500'
     },
     recipeImage: {
         flex: 1,
@@ -152,3 +154,15 @@ const styles = StyleSheet.create({
     }
 
 })
+
+const mapStateToProps = (state) => {
+    return { accessToken: state.token, recipes: state.recipes }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({
+        onGetRecipes
+    }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(RecipeListComponent)

@@ -1,14 +1,17 @@
 import React, { Component } from "react";
-import { View, Text, StyleSheet, Animated, Image, Easing, Alert } from "react-native";
+import { View, Text, StyleSheet, Animated, ImageBackground, Easing, Alert } from "react-native";
 import CustomButton from './CustomButton';
 import TextView from "./TextView";
 import CustomCheckbox from "./CustomCheckbox";
 import LoadingIndicator from "./LoadingIndicator";
-import RecipeListComponent from "./RecipeListComponent";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { onGetToken } from "../Actions/actions";
+
 
 // jm1@example.com
 // jay@123
-export default class LoginComponent extends Component {
+class LoginComponent extends Component {
 
     constructor() {
         super()
@@ -55,9 +58,9 @@ export default class LoginComponent extends Component {
                 }).then((responseJson) => {
                     this.setState({ isLoading: false });
                     if (responseJson.error == null) {
-                        console.log(responseJson);
-                        this.setState({accessToken:responseJson.token})
-                        Alert.alert('Success', 'Login successfull!!')
+                        this.setState({ accessToken: responseJson.token })
+                        this.props.onGetToken(responseJson.token);
+                        this.props.navigation.navigate('List')
                     } else {
                         Alert.alert('Error', responseJson.error)
                     }
@@ -81,50 +84,45 @@ export default class LoginComponent extends Component {
             inputRange: [0, 1],
             outputRange: ['0deg', '360deg'],
         });
-        if (this.state.accessToken == null) {
-            return <View style={styles.mainContainer}>
-                <View style={styles.topContainer}>
-                    <View style={styles.welcomeTextContainer}>
-                        <Text style={[styles.welcomeText, styles.commonText]}>Welcome back!</Text>
-                    </View>
-                    <View style={styles.onusTextContainer}>
-                        <Animated.Image source={require('../assets/reactLogo.png')} style={[styles.onusLogo, { transform: [{ rotate: RotateData }] }]} />
-                        <Text style={[styles.promoText, styles.commonText]}>React App</Text>
-                    </View>
+        return <ImageBackground source={require('../assets/BG.jpeg')} style={styles.mainContainer}>
+            <View style={styles.topContainer}>
+                <View style={styles.welcomeTextContainer}>
+                    <Text style={[styles.welcomeText, styles.commonText]}>Welcome back!</Text>
                 </View>
-
-                <View style={styles.middleContainer}>
-                    <View style={{ marginBottom: 20 }}>
-                        <TextView title="Email:" keyboardType="email-address" isSecured={false} textChange={(email) => this.setState({ email })}></TextView>
-                    </View>
-
-                    <View style={styles.passwordContainer}>
-                        <TextView title="Password:" isSecured={true} textChange={(password) => { this.setState({ password }) }}></TextView>
-                    </View>
-
-                    <View style={styles.rememberMeContainer}>
-                        <CustomCheckbox enable={this.state.isRemembered}></CustomCheckbox>
-                        <Text style={styles.rememberMeText}>REMEMBER ME</Text>
-                        <View style={{ flex: 0.8 }}></View>
-                    </View>
-                </View>
-                <LoadingIndicator isLoading={this.state.isLoading} style={{ flex: 1, zIndex: 1 }}></LoadingIndicator>
-
-                <View style={styles.bottomContainer}>
-                    <CustomButton title="Login" width="60%" onPressEvent={this.loginPressed}></CustomButton>
+                <View style={styles.onusTextContainer}>
+                    <Animated.Image source={require('../assets/reactLogo.png')} style={[styles.onusLogo, { transform: [{ rotate: RotateData }] }]} />
+                    <Text style={[styles.promoText, styles.commonText]}>React App</Text>
                 </View>
             </View>
-        } else {
-            return <View style={[styles.mainContainer, styles.shadow]}>
-                <RecipeListComponent token={this.state.accessToken} />
+
+            <View style={styles.middleContainer}>
+                <View style={{ marginBottom: 20 }}>
+                    <TextView title="Email:" keyboardType="email-address" isSecured={false} textChange={(email) => this.setState({ email })}></TextView>
+                </View>
+
+                <View style={styles.passwordContainer}>
+                    <TextView title="Password:" isSecured={true} textChange={(password) => { this.setState({ password }) }}></TextView>
+                </View>
+
+                <View style={styles.rememberMeContainer}>
+                    <CustomCheckbox enable={this.state.isRemembered}></CustomCheckbox>
+                    <Text style={styles.rememberMeText}>REMEMBER ME</Text>
+                    <View style={{ flex: 0.8 }}></View>
+                </View>
             </View>
-        }
+            <LoadingIndicator isLoading={this.state.isLoading} style={{ flex: 1, zIndex: 1 }}></LoadingIndicator>
+
+            <View style={styles.bottomContainer}>
+                <CustomButton title="Login" width="60%" onPressEvent={this.loginPressed}></CustomButton>
+            </View>
+        </ImageBackground>
     }
 }
 
 const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
+        backgroundColor: 'black',
     },
     topContainer: {
         flex: 0.45,
@@ -201,3 +199,15 @@ const styles = StyleSheet.create({
         shadowRadius: 1,
     }
 });
+
+const mapStateToProps = (state) => {
+    return { token: state.token }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({
+        onGetToken
+    }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginComponent)
