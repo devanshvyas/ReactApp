@@ -21,6 +21,9 @@ class RecipeListComponent extends Component {
 
     getRecipes() {
         this.setState({ isLoading: true })
+        console.log('props', this.props);
+        
+        console.log(this.props.accessToken);
         fetch('http://35.160.197.175:3006/api/v1/recipe/cooking-list',
             {
                 method: 'GET',
@@ -156,7 +159,7 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state) => {
-    return { accessToken: state.token, recipes: state.recipes }
+    return { accessToken: state.userReducer.token, recipes: state.userReducer.recipes }
 }
 
 const mapDispatchToProps = (dispatch) => {

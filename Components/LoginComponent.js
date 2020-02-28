@@ -15,6 +15,7 @@ class LoginComponent extends Component {
 
     constructor() {
         super()
+        // console.disableYellowBox = true;
         this.RotateValueHolder = new Animated.Value(0);
         this.state = {
             isRemembered: true,
@@ -60,7 +61,7 @@ class LoginComponent extends Component {
                     if (responseJson.error == null) {
                         this.setState({ accessToken: responseJson.token })
                         this.props.onGetToken(responseJson.token);
-                        this.props.navigation.navigate('List')
+                        this.props.navigation.navigate('TabBarNav')
                     } else {
                         Alert.alert('Error', responseJson.error)
                     }
@@ -200,14 +201,10 @@ const styles = StyleSheet.create({
     }
 });
 
-const mapStateToProps = (state) => {
-    return { token: state.token }
-}
-
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({
         onGetToken
     }, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginComponent)
+export default connect(null, mapDispatchToProps)(LoginComponent)

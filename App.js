@@ -4,6 +4,7 @@ import LoginComponent from './Components/LoginComponent';
 import { createAppContainer, getActiveChildNavigationOptions } from "react-navigation";
 import { createStackNavigator } from 'react-navigation-stack';
 import RecipeListComponent from './Components/RecipeListComponent'
+import ProfileComponent from './Components/ProfileComponent'
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { Provider } from 'react-redux';
 import store from './Store'
@@ -20,6 +21,12 @@ const TabBarNav = createBottomTabNavigator(
 
       }
     },
+    Profile: {
+      screen: ProfileComponent,
+      navigationOptions: {
+        title: 'Profile'
+      }
+    }
   },
   {
     navigationOptions: {
