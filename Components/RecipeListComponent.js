@@ -57,7 +57,7 @@ class RecipeListComponent extends Component {
 
     render() {
         return (
-            <ImageBackground source={require('../assets/BG.jpeg')} style={styles.container}>
+            <ImageBackground source={require('../assets/BG.jpeg')} style={styles.container} blurRadius={5}>
                 <LoadingIndicator isLoading={this.state.isLoading} />
                 <SafeAreaView>
                     <ScrollView>

@@ -1,10 +1,10 @@
-import { TOKEN, RECIPELIST } from "./actionType"
+import { USERDATA, RECIPELIST } from "./actionType"
 
 export function onGetToken(token) {
     console.log('dispatch token');
     
     return {
-        type: TOKEN,
+        type: USERDATA,
         data: token
     }
 }

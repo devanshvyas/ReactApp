@@ -59,8 +59,9 @@ class LoginComponent extends Component {
                 }).then((responseJson) => {
                     this.setState({ isLoading: false });
                     if (responseJson.error == null) {
-                        this.setState({ accessToken: responseJson.token })
-                        this.props.onGetToken(responseJson.token);
+                        // print("response:", responseJson.firstName);
+                        this.setState({ accessToken: responseJson.accessToken })
+                        this.props.onGetToken(responseJson);
                         this.props.navigation.navigate('TabBarNav')
                     } else {
                         Alert.alert('Error', responseJson.error)
@@ -85,7 +86,7 @@ class LoginComponent extends Component {
             inputRange: [0, 1],
             outputRange: ['0deg', '360deg'],
         });
-        return <ImageBackground source={require('../assets/BG.jpeg')} style={styles.mainContainer}>
+        return <ImageBackground source={require('../assets/BG.jpeg')} style={styles.mainContainer} blurRadius={5}>
             <View style={styles.topContainer}>
                 <View style={styles.welcomeTextContainer}>
                     <Text style={[styles.welcomeText, styles.commonText]}>Welcome back!</Text>
