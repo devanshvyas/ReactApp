@@ -2,11 +2,9 @@ import React, { Component } from "react";
 import { ImageBackground, Image, Text, StyleSheet, View, Alert } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { connect } from "react-redux";
-import { onGetRecipes } from "../Actions/actions";
-import { bindActionCreators } from "redux";
 import * as Permission from 'expo-permissions'
 import * as ImagePicker from 'expo-image-picker'
-import MapView from "react-native-maps";
+import MapViewComponent from "./MapViewComponent";
 
 class ProfileComponent extends Component {
 
@@ -76,12 +74,12 @@ class ProfileComponent extends Component {
             <Text style={styles.nameEmail}>{this.props.email}</Text>
             </View>
             <Text style={styles.location}>Current Location</Text>
-            <MapView 
+            {/* <MapView 
                 showsUserLocation={true}
                 style={{flex: 0.2}}
             >
-                </MapView>
-
+                </MapView> */}
+            <MapViewComponent  style></MapViewComponent>
         </ImageBackground>
     }
 }
@@ -93,7 +91,7 @@ const styles = StyleSheet.create({
     },
     imageContainer: {
         top:70,
-        flex: 0.5,
+        flex: 0.9,
         alignItems:'center',
     },
     image: {
@@ -109,17 +107,20 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontStyle: "normal",
         textDecorationLine:"underline",
-        textAlign: "center"
+        textAlign: "center",
+        color: '#219199'
     },
     nameEmail: {
         bottom: 300,
         fontSize: 20,
-        paddingBottom:20
+        paddingBottom:20,
+        color: '#219199'
     },
     location: {
         fontSize: 20,
         alignSelf: 'center',
-        paddingBottom: 20
+        paddingBottom: 20,
+        color: '#219199'
     }
 })
 

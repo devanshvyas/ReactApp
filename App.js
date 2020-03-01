@@ -8,6 +8,10 @@ import ProfileComponent from './Components/ProfileComponent'
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { Provider } from 'react-redux';
 import store from './Store'
+import RecipeDetailComponent from './Components/RecipeDetailComponent';
+import MapViewComponent from './Components/MapViewComponent';
+import WebViewComponent from './Components/WebViewComponent';
+import AddRecipeComponent from './Components/AddRecipeComponent';
 
 const TabBarNav = createBottomTabNavigator(
   {
@@ -19,6 +23,12 @@ const TabBarNav = createBottomTabNavigator(
         // ),
         title: 'Recipe List',
 
+      }
+    },
+    AddRecipe: {
+      screen: AddRecipeComponent,
+      navigationOptions: {
+        title: 'Add Recipe'
       }
     },
     Profile: {
@@ -33,9 +43,7 @@ const TabBarNav = createBottomTabNavigator(
       headerShown: false,
     },
     tabBarOptions: {
-      activeTintColor: '#521751',
-      inactiveTintColor: '#dbacf2f5',
-      activeBackgroundColor: '#219199'
+      activeTintColor: '#219199',
     }
   }
 )
@@ -54,8 +62,30 @@ const Navigator = createAppContainer(
       navigationOptions: {
         headerLeft: null,
         headerShown: false,
+        
       }
     },
+    RecipeDetail: {
+      screen: RecipeDetailComponent,
+      navigationOptions: {
+        headerBackTitle:'Home',
+        headerTintColor: '#219199'
+      }
+    },
+    MapView: {
+      screen: MapViewComponent,
+      navigationOptions: {
+        headerBackTitle:'Recipe Detail',
+        headerTintColor: '#219199'
+      }
+    },
+    WebView: {
+      screen: WebViewComponent,
+      navigationOptions: {
+        headerBackTitle:'Recipe Detail',
+        headerTintColor: '#219199'
+      }
+    }
   },
     {
       initialRouteName: 'Login'

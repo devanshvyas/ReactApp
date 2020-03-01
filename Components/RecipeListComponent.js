@@ -24,7 +24,7 @@ class RecipeListComponent extends Component {
         console.log('props', this.props);
         
         console.log(this.props.accessToken);
-        fetch('http://35.160.197.175:3006/api/v1/recipe/cooking-list',
+        fetch('http://35.160.197.175:3006/api/v1/recipe/feeds',
             {
                 method: 'GET',
                 headers: {
@@ -65,9 +65,11 @@ class RecipeListComponent extends Component {
                         <FlatList
                             data={this.state.recipeList}
                             renderItem={({ item }) => {
-                                return <View style={[styles.recipeCell, styles.shadow]}>
-                                    <TouchableWithoutFeedback style={styles.container}>
-                                        <ImageBackground source={this.getImageUrl(item.photo)} style={styles.recipeImage} imageStyle={{ borderRadius: 10 }}>
+                                return <TouchableWithoutFeedback style={styles.container} onPress={() => {
+                                    this.props.navigation.navigate('RecipeDetail', {selectedRecipe: item})
+                                }}>
+                                            <View style={[styles.recipeCell, styles.shadow]}>
+                                            <ImageBackground source={this.getImageUrl(item.photo)} style={styles.recipeImage} imageStyle={{ borderRadius: 10 }}>
                                             <View style={styles.recipeBottomContainer}>
                                             </View>
                                             <View style={styles.recipeUpperContainer}>
@@ -79,9 +81,10 @@ class RecipeListComponent extends Component {
                                                 <Text style={[styles.commonText, styles.recipeTitle, styles.shadow]}>{item.name}</Text>
                                             </View>
                                         </ImageBackground>
+                                        </View>
                                     </TouchableWithoutFeedback>
-                                </View>
                             }}
+                            
                             keyExtractor={(item) => item.recipeId}
                         />
                     </ScrollView>
