@@ -74,11 +74,6 @@ class ProfileComponent extends Component {
             <Text style={styles.nameEmail}>{this.props.email}</Text>
             </View>
             <Text style={styles.location}>Current Location</Text>
-            {/* <MapView 
-                showsUserLocation={true}
-                style={{flex: 0.2}}
-            >
-                </MapView> */}
             <MapViewComponent  style></MapViewComponent>
         </ImageBackground>
     }

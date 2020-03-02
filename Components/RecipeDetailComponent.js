@@ -8,10 +8,6 @@ class RecipeDetailComponent extends Component {
 
     recipe = this.props.navigation.state.params.selectedRecipe;
 
-    componentDidMount() {
-
-    }
-
     render() {
         return <ImageBackground source={require('../assets/BG.jpeg')} style={styles.container} blurRadius={5}>
             <Image blurRadius={2} source={{ uri: this.recipe.photo }} style={{ height: 200 }} />

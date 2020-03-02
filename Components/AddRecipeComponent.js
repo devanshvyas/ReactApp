@@ -48,7 +48,7 @@ class AddRecipeComponent extends Component {
     }
 
     renderImage() {
-        var imageUrl = this.state.image ?? require('../assets/profile.png')
+        var imageUrl = this.state.image ?? require('../assets/food.png')
         return (
             <Image style={styles.image} source={imageUrl} />
         )
@@ -108,7 +108,7 @@ class AddRecipeComponent extends Component {
                     text: 'Okay',
                     style: 'cancel',
                     onPress: () => {
-                        this.props.navigation.navigate('Home');
+                        this.props.navigation.navigate('List');
                     }
                 }
             ])

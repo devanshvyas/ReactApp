@@ -26,14 +26,14 @@ const styles = StyleSheet.create({
         borderBottomEndRadius:0.5,
     },
     text: {
-        flex: 0.3,
+        flex: 0.4,
         fontSize: 15,
         padding:2,
         alignSelf: 'flex-end',
         color:'#219199'
     },
     textView:{
-        flex:0.7,
+        flex:0.6,
         fontSize:15,
         padding:2,
         alignSelf: 'flex-end',

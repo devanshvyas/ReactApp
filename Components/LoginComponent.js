@@ -15,12 +15,12 @@ class LoginComponent extends Component {
 
     constructor() {
         super()
-        // console.disableYellowBox = true;
+        console.disableYellowBox = true;
         this.RotateValueHolder = new Animated.Value(0);
         this.state = {
             isRemembered: true,
-            email: 'jm1@example.com',
-            password: 'jay@123',
+            email: '',
+            password: '',
             isLoading: false,
             accessToken: null
         }

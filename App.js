@@ -18,22 +18,28 @@ const TabBarNav = createBottomTabNavigator(
     List: {
       screen: RecipeListComponent,
       navigationOptions: {
-        // tabBarIcon: ({ tintColor }) => (
-        //   <Image style={{ height: 20, width: 20, tintColor: tintColor }} source={require('./assets/home-icon2.png')}></Image>
-        // ),
-        title: 'Recipe List',
+        tabBarIcon: ({ tintColor }) => (
+          <Image style={{ height: 20, width: 20, tintColor: tintColor }} source={require('./assets/home.png')}></Image>
+        ),
+        title: 'Home',
 
       }
     },
     AddRecipe: {
       screen: AddRecipeComponent,
       navigationOptions: {
+        tabBarIcon: ({ tintColor }) => (
+          <Image style={{ height: 20, width: 20, tintColor: tintColor }} source={require('./assets/plus.png')}></Image>
+        ),
         title: 'Add Recipe'
       }
     },
     Profile: {
       screen: ProfileComponent,
       navigationOptions: {
+        tabBarIcon: ({ tintColor }) => (
+          <Image style={{ height: 20, width: 20, tintColor: tintColor }} source={require('./assets/user.png')}></Image>
+        ),
         title: 'Profile'
       }
     }
@@ -68,6 +74,7 @@ const Navigator = createAppContainer(
     RecipeDetail: {
       screen: RecipeDetailComponent,
       navigationOptions: {
+        title: 'Recipe Detail',
         headerBackTitle:'Home',
         headerTintColor: '#219199'
       }
@@ -82,6 +89,7 @@ const Navigator = createAppContainer(
     WebView: {
       screen: WebViewComponent,
       navigationOptions: {
+        title:'Web View',
         headerBackTitle:'Recipe Detail',
         headerTintColor: '#219199'
       }
